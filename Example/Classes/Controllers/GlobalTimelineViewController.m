@@ -40,8 +40,8 @@
 - (void)reload:(__unused id)sender {
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
-    NSURLSessionTask *task = [Post globalTimelinePostsWithBlock:^(NSArray *posts, NSError *error) {
-        if (!error) {
+    NSURLSessionTask *task = [Post globalTimelinePostsWithBlock:^(NSArray *posts, NSError *error, NSString *errorMessage) {
+        if (!error && !errorMessage) {
             self.posts = posts;
             [self.tableView reloadData];
         }

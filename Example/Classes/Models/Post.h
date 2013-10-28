@@ -33,6 +33,6 @@
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes;
 
-+ (NSURLSessionDataTask *)globalTimelinePostsWithBlock:(void (^)(NSArray *posts, NSError *error))block;
++ (NSURLSessionDataTask *)globalTimelinePostsWithBlock:(void (^)(NSArray *posts, NSError *error, NSString *errorMessage))block;
 
 @end

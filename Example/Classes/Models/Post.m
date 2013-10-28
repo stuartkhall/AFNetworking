@@ -43,7 +43,7 @@
 
 #pragma mark -
 
-+ (NSURLSessionDataTask *)globalTimelinePostsWithBlock:(void (^)(NSArray *posts, NSError *error))block {
++ (NSURLSessionDataTask *)globalTimelinePostsWithBlock:(void (^)(NSArray *posts, NSError *error, NSString *errorMessage))block {
     return [[AFAppDotNetAPIClient sharedClient] GET:@"stream/0/posts/stream/global" parameters:nil success:^(NSURLSessionDataTask * __unused task, id JSON) {
         NSArray *postsFromResponse = [JSON valueForKeyPath:@"data"];
         NSMutableArray *mutablePosts = [NSMutableArray arrayWithCapacity:[postsFromResponse count]];
@@ -53,11 +53,11 @@
         }
 
         if (block) {
-            block([NSArray arrayWithArray:mutablePosts], nil);
+            block([NSArray arrayWithArray:mutablePosts], nil, nil);
         }
-    } failure:^(NSURLSessionDataTask *__unused task, NSError *error) {
+    } failure:^(NSURLSessionDataTask *__unused task, NSError *error, id responseObject) {
         if (block) {
-            block([NSArray array], error);
+            block([NSArray array], error, [responseObject valueForKeyPath:@"meta.error_message"]);
         }
     }];
 }
